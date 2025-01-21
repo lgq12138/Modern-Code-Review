@@ -19,26 +19,36 @@ def main():
     print("X = Player 1")
     print("O = Player 2")
     for n in range(9):
-        if not turn:
-            print("Player 1: ", end="")
-        else:
-            print("Player 2: ", end="")
-        print("Which cell to mark? i:[1..3], j:[1..3]: ")
-        i, j = map(int, input().split())
-        i -= 1
-        j -= 1
-        if not turn:
-            game[i][j] = 'X'
-        else:
-            game[i][j] = 'O'
+        valid_input = False
+        while not valid_input:
+            try:
+                if  not turn:
+                   print("Player 1: ", end="")
+                else:
+                   print("Player 2: ", end="")
+                print("Which cell to mark? i:[1..3], j:[1..3]: ")
+                i, j = map(int, input().split())
+                if i < 1 or i > 3 or j < 1 or j > 3:  # Check if the input is within bounds
+                    raise ValueError("Input out of bounds.")
+                i -= 1
+                j -= 1
+                if game[i][j] != ' ':  # Check if the cell is already taken
+                    raise ValueError("Cell already occupied.")
+                if  not turn:
+                    game[i][j] = player1
+                else:
+                    game[i][j] = player2
+                valid_input = True
+            except (ValueError, IndexError) as e:
+                print(f"Invalid input: {e}. Please try again.")
         turn = not turn  # Switch turns
         # Show the game board
         for row in game:
             print(" ".join(row))
-        if is_win(game) and game[i][j]=='X':
+        if is_win(game) and game[i][j]==player2:
             print("Player 1 Win!")
             break  # Terminate the game
-        if is_win(game) and game[i][j]=='O':
+        if is_win(game) and game[i][j]==player2:
             print("Player 2 Win!")
             break  # Terminate the game
         if n == 8:  # All cells have been filled
