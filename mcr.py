@@ -29,7 +29,6 @@ def main():
     print("X = Player 1")
     print("O = Player 2")
     for n in range(9):
-        turn = not turn  # Switch turns
         if not turn:
             print("Player 1: ", end="")
         else:
@@ -42,14 +41,18 @@ def main():
             game[i][j] = 'X'
         else:
             game[i][j] = 'O'
-        if is_win(game):
-            print("Win!")
-            break  # Terminate the game
-        if n == 8:  # All cells have been filled
-            print("Tie!")
+        turn = not turn  # Switch turns
         # Show the game board
         for row in game:
             print(" ".join(row))
+        if is_win(game) and game[i][j]=='X':
+            print("Player 1 Win!")
+            break  # Terminate the game
+        if is_win(game) and game[i][j]=='O':
+            print("Player 2 Win!")
+            break  # Terminate the game
+        if n == 8:  # All cells have been filled
+            print("Tie!")
 
 if __name__ == "__main__":
     main()
